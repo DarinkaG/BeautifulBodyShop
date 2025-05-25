@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Body Shop</title>
+	<link rel="icon" type="image/png" href="https://i.postimg.cc/JzRzb4sJ/icon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3rem;
+            height: 90px;
+        }
+
+        .logo {
+            width: 180px;
+            height: 70px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #b8860b;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #b8860b;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 90px;
+            min-height: 85vh;
+            background: linear-gradient(135deg, 
+                rgba(184, 134, 11, 0.9) 0%, 
+                rgba(26, 26, 26, 0.8) 50%, 
+                rgba(184, 134, 11, 0.9) 100%),
+                radial-gradient(circle at 30% 20%, rgba(255, 182, 193, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(255, 192, 203, 0.2) 0%, transparent 50%),
+                linear-gradient(45deg, #f8f9fa 0%, #e9ecef 100%);
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="lace" patternUnits="userSpaceOnUse" width="20" height="20"><path d="M10,0 Q15,5 20,0 Q15,5 10,10 Q5,5 0,10 Q5,5 10,0" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23lace)"/></svg>') repeat;
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 0 2rem;
+            animation: fadeInUp 1.2s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            background: linear-gradient(45deg, #ffffff, #f8f9fa, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
+            to { filter: drop-shadow(0 0 15px rgba(255,255,255,0.6)); }
+        }
+
+        .hero-tagline {
+            font-size: 1.6rem;
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: 1.5px;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            opacity: 0.95;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            text-decoration: none;
+            padding: 1.5rem 3.5rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(184, 134, 11, 0.8);
+            transition: left 0.4s ease;
+        }
+
+        .hero-cta:hover::before {
+            left: 0;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.8);
+        }
+
+        .hero-cta span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Floating elements */
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: floatAround 15s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: 5s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes floatAround {
+            0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) translateX(10px) rotate(5deg); }
+            66% { transform: translateY(-10px) translateX(-10px) rotate(-5deg); }
+        }
+
+        /* Products Section */
+        .products-section {
+            max-width: 1400px;
+            margin: 8rem auto;
+            padding: 0 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin-bottom: 6rem;
+            letter-spacing: -1px;
+        }
+
+        .products-grid {
+            display: flex;
+            gap: 4rem;
+            margin-bottom: 6rem;
+            justify-content: center;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            flex: 1;
+            max-width: 380px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .product-image.secondary {
+            opacity: 0;
+            transform: scale(1.1);
+        }
+
+        .product-image-container:hover .product-image.primary {
+            opacity: 0;
+            transform: scale(1.1);
+        }
+
+        .product-image-container:hover .product-image.secondary {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        /* Image indicators */
+        .image-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .indicator.active {
+            background: #b8860b;
+            transform: scale(1.2);
+        }
+
+        .indicator:hover {
+            background: rgba(255,255,255,0.8);
+        }
+
+        /* Mobile touch indicators */
+        .touch-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .product-card:hover .touch-indicator {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .touch-indicator {
+                opacity: 1;
+            }
+        }
+
+        .product-info {
+            padding: 3rem 2.5rem;
+        }
+
+        .product-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: #b8860b;
+            margin-bottom: 2.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 1.2rem 2rem;
+            font-size: 0.9rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-to-cart-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #b8860b;
+            transition: left 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover::before {
+            left: 0;
+        }
+
+        .add-to-cart-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Catalog Button */
+        .catalog-section {
+            text-align: center;
+            margin: 8rem 0;
+        }
+
+        .catalog-btn {
+            display: inline-block;
+            background: transparent;
+            color: #1a1a1a;
+            text-decoration: none;
+            padding: 1.5rem 4rem;
+            border: 2px solid #1a1a1a;
+            font-size: 1rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .catalog-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            transition: left 0.4s ease;
+        }
+
+        .catalog-btn:hover::before {
+            left: 0;
+        }
+
+        .catalog-btn:hover {
+            color: white;
+        }
+
+        .catalog-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 6rem 3rem 3rem;
+            margin-top: 8rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .footer p {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            font-weight: 300;
+            font-size: 0.95rem;
+        }
+
+        .shipping-info {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            margin: 3rem 0;
+            border-radius: 10px;
+        }
+
+        .shipping-info h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #b8860b;
+        }
+
+        .important-note {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            margin-top: 3rem;
+            font-weight: 300;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .products-grid {
+                flex-wrap: wrap;
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                height: auto;
+                gap: 1rem;
+            }
+
+            .logo {
+                width: 150px;
+                height: 60px;
+            }
+
+            .header {
+                position: relative;
+            }
+
+            .hero {
+                margin-top: 0;
+                min-height: 70vh;
+            }
+
+            .hero h2 {
+                font-size: 3.5rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.2rem;
+            }
+
+            .nav-menu {
+                gap: 1.5rem;
+            }
+
+            .products-section {
+                padding: 0 1.5rem;
+            }
+
+            .products-grid {
+                flex-direction: column;
+                gap: 3rem;
+            }
+
+            .footer {
+                padding: 4rem 1.5rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <!-- Logo más grande -->
+            <img src="https://i.postimg.cc/c15Dbfvm/LETLOGO.png" alt="Beautiful Body Shop" class="logo" >
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="catalogo.html">Catalogo</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section Mejorado -->
+    <section class="hero" id="inicio">
+        <!-- Elementos flotantes decorativos -->
+        <div class="floating-element">✨</div>
+        <div class="floating-element">💎</div>
+        <div class="floating-element">🌹</div>
+        
+        <div class="hero-content">
+            <h2>Beautiful Body Shop</h2>
+            <p class="hero-tagline">"Luce espectacular y siéntete cómoda en cada momento"</p>
+            <a href="#productos" class="hero-cta">
+                <span>Descubre la Colección</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="productos">
+        <h2 class="section-title fade-in">Colección Exclusiva</h2>
+        <div class="products-grid">
+            <div class="product-card fade-in">
+                <div class="product-image-container" onclick="toggleImage(this)">
+                    <!-- Imagen principal -->
+                    <img src="https://i.postimg.cc/mkhmrg5C/Kiss1.jpg" alt="Kiss" class="product-image primary">
+                    <!-- Imagen secundaria -->
+                    <img src="https://i.postimg.cc/NFVp2v3V/Kiss2.jpg" alt="Kiss - Vista 2" class="product-image secondary">
+                    
+                    <!-- Indicadores de imagen -->
+                    <div class="image-indicators">
+                        <div class="indicator active" onclick="showImage(event, this, 0)"></div>
+                        <div class="indicator" onclick="showImage(event, this, 1)"></div>
+                    </div>
+                    
+                    <!-- Indicador táctil -->
+                    <div class="touch-indicator">Toca para ver más</div>
+                </div>
+                <div class="product-info">
+                    <h3>Kiss set</h3>
+                    <div class="product-price">$365 MXN</div>
+                    <button class="add-to-cart-btn" onclick="redirectToInstagram('Kiss set - $365')">
+                        <span>Agregar al Carrito</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image-container" onclick="toggleImage(this)">
+                    <!-- Imagen principal -->
+                    <img src="https://i.postimg.cc/sXTnyhw3/li1.jpg" alt="lenlig" class="product-image primary">
+                    <!-- Imagen secundaria -->
+                    <img src="https://i.postimg.cc/s2yKhcLV/li2.jpg" alt="lenlig - Vista 2" class="product-image secondary">
+                    
+                    <!-- Indicadores de imagen -->
+                    <div class="image-indicators">
+                        <div class="indicator active" onclick="showImage(event, this, 0)"></div>
+                        <div class="indicator" onclick="showImage(event, this, 1)"></div>
+                    </div>
+                    
+                    <!-- Indicador táctil -->
+                    <div class="touch-indicator">Toca para ver más</div>
+                </div>
+                <div class="product-info">
+                    <h3>Luxury </h3>
+                    <div class="product-price">$550 MXN</div>
+                    <button class="add-to-cart-btn" onclick="redirectToInstagram('Luxury - $550')">
+                        <span>Agregar al Carrito</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image-container" onclick="toggleImage(this)">
+                    <!-- Imagen principal -->
+                    <img src="https://i.postimg.cc/wBV2cNKD/rjpz1.jpg" alt="2pzrojo" class="product-image primary">
+                    <!-- Imagen secundaria -->
+                    <img src="https://i.postimg.cc/C1xNvKYX/rjpz2.jpg" alt="2pzrojo - Vista 2" class="product-image secondary">
+                    
+                    <!-- Indicadores de imagen -->
+                    <div class="image-indicators">
+                        <div class="indicator active" onclick="showImage(event, this, 0)"></div>
+                        <div class="indicator" onclick="showImage(event, this, 1)"></div>
+                    </div>
+                    
+                    <!-- Indicador táctil -->
+                    <div class="touch-indicator">Toca para ver más</div>
+                </div>
+                <div class="product-info">
+                    <h3>Set rojo </h3>
+                    <div class="product-price">$350 MXN</div>
+                    <button class="add-to-cart-btn" onclick="redirectToInstagram('Set rojo - $350')">
+                        <span>Agregar al Carrito</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Catalog Button -->
+        <div class="catalog-section fade-in">
+            <a href="catalogo.html" class="catalog-btn">
+                <span>Ver Catálogo Completo</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contacto">
+        <div class="footer-content">
+            <h3>Beautiful Body Shop</h3>
+            <p>Lencería de lujo para la mujer moderna</p>
+            
+            <div class="shipping-info">
+                <h4>Envíos y Ubicación</h4>
+                <p>📍 Celaya, Guanajuato</p>
+                <p>🚚 Envíos a toda la República Mexicana</p>
+                <p>💬 Compra segura a través de Instagram</p>
+            </div>
+            
+            <div class="important-note">
+                <strong>POLÍTICA DE HIGIENE:</strong> No hay cambios ni devoluciones por motivos de higiene.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Instagram redirect function
+        function redirectToInstagram(productInfo) {
+            // Reemplaza 'tu_usuario_instagram' con el usuario real
+            const instagramUsername = 'lenceriaymas_celaya';
+            const message = encodeURIComponent(`Hola, me interesa: ${productInfo}. ¿Podrías darme más información?`);
+            
+            // Abrir Instagram web
+            const instagramUrl = `https://www.instagram.com/${instagramUsername}/`;
+            window.open(instagramUrl, '_blank');
+        }
+
+        // Product image functionality
+        function toggleImage(container) {
+            const primary = container.querySelector('.product-image.primary');
+            const secondary = container.querySelector('.product-image.secondary');
+            const indicators = container.querySelectorAll('.indicator');
+            
+            if (primary.style.opacity === '0') {
+                // Mostrar imagen principal
+                primary.style.opacity = '1';
+                primary.style.transform = 'scale(1.05)';
+                secondary.style.opacity = '0';
+                secondary.style.transform = 'scale(1.1)';
+                indicators[0].classList.add('active');
+                indicators[1].classList.remove('active');
+            } else {
+                // Mostrar imagen secundaria
+                primary.style.opacity = '0';
+                primary.style.transform = 'scale(1.1)';
+                secondary.style.opacity = '1';
+                secondary.style.transform = 'scale(1.05)';
+                indicators[0].classList.remove('active');
+                indicators[1].classList.add('active');
+            }
+        }
+
+        function showImage(event, indicator, imageIndex) {
+            event.stopPropagation();
+            
+            const container = indicator.closest('.product-image-container');
+            const primary = container.querySelector('.product-image.primary');
+            const secondary = container.querySelector('.product-image.secondary');
+            const indicators = container.querySelectorAll('.indicator');
+            
+            // Reset all indicators
+            indicators.forEach(ind => ind.classList.remove('active'));
+            indicator.classList.add('active');
+            
+            if (imageIndex === 0) {
+                // Mostrar imagen principal
+                primary.style.opacity = '1';
+                primary.style.transform = 'scale(1.05)';
+                secondary.style.opacity = '0';
+                secondary.style.transform = 'scale(1.1)';
+            } else {
+                // Mostrar imagen secundaria
+                primary.style.opacity = '0';
+                primary.style.transform = 'scale(1.1)';
+                secondary.style.opacity = '1';
+                secondary.style.transform = 'scale(1.05)';
+            }
+        }
+
+        // Auto-toggle images on mobile touch
+        let touchStartTime = 0;
+        document.querySelectorAll('.product-image-container').forEach(container => {
+            container.addEventListener('touchstart', function() {
+                touchStartTime = Date.now();
+            });
+            
+            container.addEventListener('touchend', function(e) {
+                const touchDuration = Date.now() - touchStartTime;
+                if (touchDuration < 300) { // Quick tap
+                    toggleImage(this);
+                }
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.background = '#ffffff';
+                header.style.backdropFilter = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

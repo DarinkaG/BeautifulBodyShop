@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Beautiful Body Shop</title>
+	<link rel="icon" type="image/png" href="https://i.postimg.cc/JzRzb4sJ/icon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3rem;
+            height: 90px;
+        }
+
+        .logo {
+            width: 180px;
+            height: 70px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #b8860b;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #b8860b;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Catalog Header */
+        .catalog-header {
+            margin-top: 90px;
+            padding: 6rem 3rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, 
+                rgba(184, 134, 11, 0.1) 0%, 
+                rgba(26, 26, 26, 0.05) 50%, 
+                rgba(184, 134, 11, 0.1) 100%);
+        }
+
+        .catalog-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+        }
+
+        .catalog-subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: #666;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 3rem 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 2px solid #1a1a1a;
+            color: #1a1a1a;
+            padding: 0.8rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            transition: left 0.3s ease;
+        }
+
+        .filter-btn:hover::before,
+        .filter-btn.active::before {
+            left: 0;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            color: white;
+        }
+
+        .filter-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Products Grid */
+        .products-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem 8rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4rem;
+            margin-bottom: 6rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .product-card.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .product-image.secondary {
+            opacity: 0;
+            transform: scale(1.1);
+        }
+
+        .product-image-container:hover .product-image.primary {
+            opacity: 0;
+            transform: scale(1.1);
+        }
+
+        .product-image-container:hover .product-image.secondary {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        /* Image indicators */
+        .image-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .indicator.active {
+            background: #b8860b;
+            transform: scale(1.2);
+        }
+
+        .indicator:hover {
+            background: rgba(255,255,255,0.8);
+        }
+
+        .touch-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .product-card:hover .touch-indicator {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .touch-indicator {
+                opacity: 1;
+            }
+        }
+
+        .product-info {
+            padding: 3rem 2.5rem;
+        }
+
+        .product-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: #b8860b;
+            margin-bottom: 2.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 1.2rem 2rem;
+            font-size: 0.9rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-to-cart-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #b8860b;
+            transition: left 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover::before {
+            left: 0;
+        }
+
+        .add-to-cart-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 6rem 3rem 3rem;
+            margin-top: 8rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .footer p {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            font-weight: 300;
+            font-size: 0.95rem;
+        }
+
+        .shipping-info {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            margin: 3rem 0;
+            border-radius: 10px;
+        }
+
+        .shipping-info h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #b8860b;
+        }
+
+        .important-note {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            margin-top: 3rem;
+            font-weight: 300;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                height: auto;
+                gap: 1rem;
+            }
+
+            .logo {
+                width: 150px;
+                height: 60px;
+            }
+
+            .header {
+                position: relative;
+            }
+
+            .catalog-header {
+                margin-top: 0;
+                padding: 4rem 1.5rem 3rem;
+            }
+
+            .catalog-title {
+                font-size: 2.5rem;
+            }
+
+            .catalog-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .filter-section {
+                padding: 2rem 1.5rem 1rem;
+            }
+
+            .filter-buttons {
+                gap: 1rem;
+            }
+
+            .filter-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.8rem;
+            }
+
+            .nav-menu {
+                gap: 1.5rem;
+            }
+
+            .products-container {
+                padding: 0 1.5rem 4rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .footer {
+                padding: 4rem 1.5rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <img src="https://i.postimg.cc/c15Dbfvm/LETLOGO.png" alt="Beautiful Body Shop" class="logo">
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="catalogo.html">Catalogo</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Catalog Header -->
+    <section class="catalog-header">
+        <h1 class="catalog-title">Catálogo Completo</h1>
+        <p class="catalog-subtitle">Descubre toda nuestra colección de lencería exclusiva</p>
+    </section>
+
+
+
+    <!-- Products Container -->
+    <section class="products-container">
+        <div class="products-grid">
+            <!-- Romance Collection -->
+            <div class="product-card fade-in">
+                <div class="product-image-container" onclick="toggleImage(this)">
+                    <img src="https://i.postimg.cc/mkhmrg5C/Kiss1.jpg" alt="Kiss" class="product-image primary">
+                    <img src="https://i.postimg.cc/NFVp2v3V/Kiss2.jpg" alt="Kiss - Vista 2" class="product-image secondary">
+                    
+                    <div class="image-indicators">
+                        <div class="indicator active" onclick="showImage(event, this, 0)"></div>
+                        <div class="indicator" onclick="showImage(event, this, 1)"></div>
+                    </div>
+                    
+                    <div class="touch-indicator">Toca para ver más</div>
+                </div>
+                <div class="product-info">
+                    <h3>Kiss set</h3>
+                    <div class="product-price">$365 MXN</div>
+                    <button class="add-to-cart-btn" onclick="redirectToInstagram('Kiss set - $365')">
+                        <span>Agregar al Carrito</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Luxury Body -->
+            <div class="product-card fade-in">
+                <div class="product-image-container" onclick="toggleImage(this)">
+                    <img src="https://i.postimg.cc/sXTnyhw3/li1.jpg" alt="lenlig" class="product-image primary">
+                    <img src="https://i.postimg.cc/s2yKhcLV/li2.jpg" alt="lenlig - Vista 2" class="product-image secondary">
+                    
+                    <div class="image-indicators">
+                        <div class="indicator active" onclick="showImage(event, this, 0)"></div>
+                        <div class="indicator" onclick="showImage(event, this, 1)"></div>
+                    </div>
+                    
+                    <div class="touch-indicator">Toca para ver más</div>
+                </div>
+                <div class="product-info">
+                    <h3>Luxury </h3>
+                    <div class="product-price">$550 MXN</div>
+                    <button class="add-to-cart-btn" onclick="redirectToInstagram('Luxury - $550')">
+                        <span>Agregar al Carrito</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dreams Collection -->
+            <div class="product-card fade-in">
+                <div class="product-image-container" onclick="toggleImage(this)">
+                    <img src="https://i.postimg.cc/wBV2cNKD/rjpz1.jpg" alt="2pzrojo" class="product-image primary">
+                    <img src="https://i.postimg.cc/C1xNvKYX/rjpz2.jpg" alt="2pzrojo - Vista 2" class="product-image secondary">
+                    
+                    <div class="image-indicators">
+                        <div class="indicator active" onclick="showImage(event, this, 0)"></div>
+                        <div class="indicator" onclick="showImage(event, this, 1)"></div>
+                    </div>
+                    
+                    <div class="touch-indicator">Toca para ver más</div>
+                </div>
+                <div class="product-info">
+                    <h3>Set rojo </h3>
+                    <div class="product-price">$350 MXN</div>
+                    <button class="add-to-cart-btn" onclick="redirectToInstagram('Set rojo - $350')">
+                        <span>Agregar al Carrito</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Nuevos productos -->
+            <!-- Elegance Set -->
+            <div class="product-card fade-in">
+                <div class="product-image-container" onclick="toggleImage(this)">
+                    <img src="https://i.postimg.cc/L8jN57NC/Ne1.jpg" alt="Elegance Set" class="product-image primary">
+                    <img src="https://i.postimg.cc/9FRx5zTj/Ne2.jpg" alt="Elegance Set - Vista 2" class="product-image secondary">
+                    
+                    <div class="image-indicators">
+                        <div class="indicator active" onclick="showImage(event, this, 0)"></div>
+                        <div class="indicator" onclick="showImage(event, this, 1)"></div>
+                    </div>
+                    
+                    <div class="touch-indicator">Toca para ver más</div>
+                </div>
+                <div class="product-info">
+                    <h3>Elegance Set</h3>
+                    <div class="product-price">$500 MXN</div>
+                    <button class="add-to-cart-btn" onclick="redirectToInstagram('Elegance Set - $500')">
+                        <span>Agregar al Carrito</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Passion Noir -->
+            <div class="product-card fade-in">
+                <div class="product-image-container" onclick="toggleImage(this)">
+                    <img src="https://i.postimg.cc/63bhFNp3/tang.jpg" alt="tangasvs" class="product-image primary">
+					<img src="https://i.postimg.cc/63bhFNp3/tang.jpg" alt="tangasvs - vista 2" class="product-image secondary">
+					
+                    
+                    <div class="image-indicators">
+                        <div class="indicator active" onclick="showImage(event, this, 0)"></div>
+                        <div class="indicator" onclick="showImage(event, this, 1)"></div>
+                    </div>
+                    
+                    <div class="touch-indicator">Toca para ver más</div>
+                </div>
+                <div class="product-info">
+                    <h3>Tanga victoria secret</h3>
+                    <div class="product-price">$255 MXN C/una</div>
+                    <button class="add-to-cart-btn" onclick="redirectToInstagram('Tanga victoria secret - $255')">
+                        <span>Agregar al Carrito</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Golden Dreams -->
+            <div class="product-card fade-in">
+                <div class="product-image-container" onclick="toggleImage(this)">
+                    <img src="https://i.postimg.cc/RVkgM9QJ/rj.jpg" alt="bodyrj" class="product-image primary">
+					<img src="https://i.postimg.cc/RVkgM9QJ/rj.jpg" alt="bodyrj - vista 2" class="product-image secondary">
+                    
+                    <div class="image-indicators">
+                        <div class="indicator active" onclick="showImage(event, this, 0)"></div>
+                        <div class="indicator" onclick="showImage(event, this, 1)"></div>
+                    </div>
+                    
+                    <div class="touch-indicator">Toca para ver más</div>
+                </div>
+                <div class="product-info">
+                    <h3>Body + medias</h3>
+                    <div class="product-price">$500 MXN</div>
+                    <button class="add-to-cart-btn" onclick="redirectToInstagram('Body + medias - $500')">
+                        <span>Agregar al Carrito</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contacto">
+        <div class="footer-content">
+            <h3>Beautiful Body Shop</h3>
+            <p>Lencería de lujo para la mujer moderna</p>
+            
+            <div class="shipping-info">
+                <h4>Envíos y Ubicación</h4>
+                <p>📍 Celaya, Guanajuato</p>
+                <p>🚚 Envíos a toda la República Mexicana</p>
+                <p>💬 Compra segura a través de Instagram</p>
+            </div>
+            
+            <div class="important-note">
+                <strong>POLÍTICA DE HIGIENE:</strong> No hay cambios ni devoluciones por motivos de higiene.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Instagram redirect function
+        function redirectToInstagram(productInfo) {
+            const instagramUsername = 'lenceriaymas_celaya';
+            const message = encodeURIComponent(`Hola, me interesa: ${productInfo}. ¿Podrías darme más información?`);
+            
+            const instagramUrl = `https://www.instagram.com/${instagramUsername}/`;
+            window.open(instagramUrl, '_blank');
+        }
+
+        // Product image functionality
+        function toggleImage(container) {
+            const primary = container.querySelector('.product-image.primary');
+            const secondary = container.querySelector('.product-image.secondary');
+            const indicators = container.querySelectorAll('.indicator');
+            
+            if (primary.style.opacity === '0') {
+                primary.style.opacity = '1';
+                primary.style.transform = 'scale(1.05)';
+                secondary.style.opacity = '0';
+                secondary.style.transform = 'scale(1.1)';
+                indicators[0].classList.add('active');
+                indicators[1].classList.remove('active');
+            } else {
+                primary.style.opacity = '0';
+                primary.style.transform = 'scale(1.1)';
+                secondary.style.opacity = '1';
+                secondary.style.transform = 'scale(1.05)';
+                indicators[0].classList.remove('active');
+                indicators[1].classList.add('active');
+            }
+        }
+
+        function showImage(event, indicator, imageIndex) {
+            event.stopPropagation();
+            
+            const container = indicator.closest('.product-image-container');
+            const primary = container.querySelector('.product-image.primary');
+            const secondary = container.querySelector('.product-image.secondary');
+            const indicators = container.querySelectorAll('.indicator');
+            
+            indicators.forEach(ind => ind.classList.remove('active'));
+            indicator.classList.add('active');
+            
+            if (imageIndex === 0) {
+                primary.style.opacity = '1';
+                primary.style.transform = 'scale(1.05)';
+                secondary.style.opacity = '0';
+                secondary.style.transform = 'scale(1.1)';
+            } else {
+                primary.style.opacity = '0';
+                primary.style.transform = 'scale(1.1)';
+                secondary.style.opacity = '1';
+                secondary.style.transform = 'scale(1.05)';
+            }
+        }
+
+        // Auto-toggle images on mobile touch
+        let touchStartTime = 0;
+        document.querySelectorAll('.product-image-container').forEach(container => {
+            container.addEventListener('touchstart', function() {
+                touchStartTime = Date.now();
+            });
+            
+            container.addEventListener('touchend', function(e) {
+                const touchDuration = Date.now() - touchStartTime;
+                if (touchDuration < 300) {
+                    toggleImage(this);
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.background = '#ffffff';
+                header.style.backdropFilter = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
